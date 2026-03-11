@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # ── FastAPI Backend ──────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: cropguard_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models          # Mount trained models
+      - ./backend:/app/backend        # Hot-reload backend (dev)
+    environment:
+      - MODEL_PATH=/app/models/crop_disease_mobilenet.h5
+      - CLASS_NAMES_PATH=/app/ml/class_names.json
+      - DISEASE_DB_PATH=/app/backend/disease_database.json
+      - DATABASE_URL=sqlite:////app/backend/database.db
+      - HOST=0.0.0.0
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── React Frontend ───────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+      args:
+        REACT_APP_API_URL: http://localhost:8000
+    container_name: cropguard_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cropguard_network

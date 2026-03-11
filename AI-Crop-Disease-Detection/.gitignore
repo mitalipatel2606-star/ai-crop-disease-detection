@@ -1,0 +1,61 @@
+# ======================================================
+# .gitignore — AI Crop Disease Detection
+# ======================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_temp
+
+# ML Models (large files — use Git LFS or cloud storage)
+models/*.h5
+models/*.pb
+models/*.ckpt
+models/training_history/
+
+# Dataset (too large for git)
+dataset/raw/
+dataset/processed/
+
+# Outputs
+outputs/
+
+# FastAPI
+backend/database.db
+backend/__pycache__/
+
+# React / Node
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Kaggle credentials
+kaggle.json
+# env
+.env
+.env.local
+.env.development
+.env.production
