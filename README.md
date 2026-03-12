@@ -1,1 +1,0 @@
-# ai-crop-disease-detection
