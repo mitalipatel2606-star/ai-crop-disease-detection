@@ -62,10 +62,18 @@ AI-Crop-Disease-Detection/
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.10+ (Recommended: Python 3.12 for Apple Silicon compatibility)
 - Node.js 18+
 - (Optional) Kaggle API key for dataset download
 - (Optional) Docker + Docker Compose
+
+---
+
+### 🍎 Special Note for Apple Silicon Mac Users
+
+If you are running this project on an M1/M2/M3/M4 macOS device, you must ensure your environment is set up properly to leverage the Metal GPU plugin for training acceleration without encountering `dlopen` crashes. 
+
+The `requirements.txt` is already pinned to stable, compatible versions (`tensorflow==2.18.0` and `tensorflow-metal==1.2.0`). **Do not upgrade TensorFlow past 2.18.0** if you intend to use the GPU via `tensorflow-metal`, as newer versions currently break Apple's Metal plugin initialization.
 
 ---
 
