@@ -42,28 +42,35 @@ def _get_gradcam_heatmap(
     """
     model = model_loader.model
 
-    # Find last Conv2D layer (handles both plain model and sub-model)
+    # Find MobileNetV2 base model and its last Conv2D layer
+    base_model = None
     last_conv_name = None
-    for layer in reversed(model.layers):
+    
+    # 1. Find the base model (mobilenetv2_1.00_224)
+    for layer in model.layers:
+        if hasattr(layer, "layers"):
+            base_model = layer
+            break
+            
+    if base_model is None:
+        log.warning("No base model found; GradCAM skipped.")
+        return np.zeros(IMG_SIZE)
+        
+    # 2. Find the last Conv2D in the base model
+    for layer in reversed(base_model.layers):
         if isinstance(layer, tf.keras.layers.Conv2D):
             last_conv_name = layer.name
-            break
-        if hasattr(layer, "layers"):           # Sub-model (e.g., MobileNetV2 base)
-            for sub_layer in reversed(layer.layers):
-                if isinstance(sub_layer, tf.keras.layers.Conv2D):
-                    last_conv_name = sub_layer.name
-                    break
-        if last_conv_name:
             break
 
     if last_conv_name is None:
         log.warning("No Conv2D layer found; GradCAM skipped.")
         return np.zeros(IMG_SIZE)
 
-    # Build grad model
+    # 3. Build grad model (Must extract from base model, not main model)
+    last_conv_layer = base_model.get_layer(last_conv_name)
     grad_model = tf.keras.Model(
         inputs=model.inputs,
-        outputs=[model.get_layer(last_conv_name).output, model.output],
+        outputs=[last_conv_layer.output, model.output],
     )
 
     # Preprocess for MobileNetV2
