@@ -12,6 +12,21 @@ An end-to-end AI-powered system that detects plant diseases from leaf images and
 
 ---
 
+## 📖 About the Project
+
+### The Origin Story
+CropGuard AI was born out of a critical need in modern agriculture: **rapid, accessible, and accurate disease identification.** Every year, farmers worldwide lose up to 40% of their crops to pests and diseases. For smallholder farmers and home gardeners alike, identifying the specific fungus, bacteria, or virus attacking their plants can mean the difference between saving a harvest and losing an entire season's yield. 
+
+Traditional laboratory testing is slow, expensive, and inaccessible to many. Agricultural extension officers are often spread too thin. This project was created to bridge that gap by putting a virtual agronomist directly into the hands of growers.
+
+### How it Works (Core Functionalities)
+The system is built on a high-speed inference pipeline designed to be both accurate and completely transparent:
+1. **Instant Diagnosis (MobileNetV2):** A user uploads a photo of a diseased leaf. We utilize a highly optimized MobileNetV2 neural network—chosen specifically because it is lightweight enough to eventually run on edge devices—which has been fine-tuned on over 54,000 images from the PlantVillage dataset to recognize 38 distinct crop-disease pairs.
+2. **Visual Transparency (Explainable AI):** AI shouldn't be a black box. The backend automatically generates a **Grad-CAM heatmap** for every prediction, visually highlighting the exact spots or lesions on the leaf that led the AI to its conclusion, allowing the user to trust and verify the result.
+3. **Actionable Recommendations:** Knowing the disease is only half the battle. The system queries a built-in knowledge base (SQLite/JSON) to instantly return actionable data, including specific pesticide recommendations, organic/eco-friendly alternatives, and preventive agronomic practices to stop the disease from returning.
+
+---
+
 ## 📸 Features
 
 | Feature | Description |
